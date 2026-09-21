@@ -49,6 +49,7 @@ export default function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [results, setResults] = useState<RoundResult[]>([]);
   const [isDaily, setIsDaily] = useState(false);
+  const [showHowToPlay, setShowHowToPlay] = useState(false);
   
   // Play Step State
   type PlayStep = 'PERIOD' | 'SEGMENT' | 'DATE';
@@ -183,6 +184,49 @@ export default function App() {
               <p className="text-[var(--text-muted)] max-w-md mx-auto text-lg leading-relaxed">
                 Desenvolva sua intuição histórica. Posicione eventos no tempo, encontre conexões e desafie sua memória.
               </p>
+            </div>
+
+            <div className="max-w-sm mx-auto mb-8">
+              <button
+                onClick={() => setShowHowToPlay(prev => !prev)}
+                aria-expanded={showHowToPlay}
+                className="w-full border border-[var(--border-color)] bg-[var(--card-bg)] py-3 px-4 rounded-sm font-serif text-lg text-[var(--text-main)] hover:border-[var(--accent-green)] transition-colors flex items-center justify-between"
+              >
+                <span>Como jogar</span>
+                <ChevronRight className={`w-5 h-5 text-[var(--text-muted)] transition-transform ${showHowToPlay ? 'rotate-90' : ''}`} />
+              </button>
+
+              <AnimatePresence initial={false}>
+                {showHowToPlay && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mt-3 bg-[var(--card-bg)] border border-[var(--border-color)] p-5 rounded-sm editorial-shadow text-left">
+                      <ol className="space-y-3 text-sm text-[var(--text-main)] font-sans leading-relaxed">
+                        <li><strong>1.</strong> Escolha o período histórico em que acredita que o evento ocorreu.</li>
+                        <li><strong>2.</strong> Aproxime a escala, escolhendo um recorte dentro daquele período.</li>
+                        <li><strong>3.</strong> Posicione o evento na linha do tempo.</li>
+                        <li><strong>4.</strong> Veja o resultado e compare seu palpite com a data de referência.</li>
+                        <li><strong>5.</strong> No <strong>Desafio Diário</strong>, há ainda a Vizinhança: identifique qual dos 20 eventos vem imediatamente antes e depois.</li>
+                      </ol>
+
+                      <div className="mt-5 pt-4 border-t border-[var(--border-color)]">
+                        <h3 className="font-serif text-lg text-[var(--text-main)] mb-3">Precisão das datas</h3>
+                        <div className="space-y-3 text-sm text-[var(--text-muted)] leading-relaxed">
+                          <p><strong className="text-[var(--text-main)]">Exata:</strong> evento associado a uma data histórica específica.</p>
+                          <p><strong className="text-[var(--text-main)]">Marco convencional:</strong> uma data usada como referência para representar uma transformação histórica mais ampla.</p>
+                          <p><strong className="text-[var(--text-main)]">Aproximada:</strong> a documentação não permite fixar um único ano com segurança, ou o fenômeno ocorreu gradualmente em torno da data indicada.</p>
+                          <p><strong className="text-[var(--text-main)]">Intervalo:</strong> processo ou acontecimento representado por um período de tempo, e não por um único ponto.</p>
+                          <p className="pt-1">A pontuação considera essas diferenças: datas menos precisas recebem uma margem maior antes que o erro temporal reduza a pontuação.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div className="space-y-8 max-w-sm mx-auto">
