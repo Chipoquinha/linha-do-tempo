@@ -233,3 +233,88 @@ h1, h2, h3 {
       linear-gradient(104deg, transparent 0 11%, rgba(75,91,70,0.15) 11.1% 11.25%, transparent 11.35% 84%, rgba(117,74,54,0.13) 84.1% 84.25%, transparent 84.35%);
   }
 }
+
+
+/* Atlas navigation language for the three temporal scales. */
+.atlas-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.atlas-section-number {
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 2.25rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  background: var(--bg-color);
+  color: var(--accent-red);
+  font-family: var(--font-serif);
+  font-size: 1rem;
+}
+
+.atlas-section-kicker {
+  margin-bottom: 0.1rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.atlas-choice-list {
+  position: relative;
+}
+
+.atlas-choice-list::before {
+  content: "";
+  position: absolute;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  left: 1.12rem;
+  width: 1px;
+  background: var(--border-color);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.atlas-choice {
+  position: relative;
+  overflow: hidden;
+}
+
+.atlas-choice::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px solid transparent;
+  pointer-events: none;
+  transition: border-color 160ms ease;
+}
+
+.atlas-choice:hover {
+  background: rgba(70, 83, 68, 0.055);
+}
+
+.atlas-choice:hover::after {
+  border-color: rgba(70, 83, 68, 0.14);
+}
+
+.atlas-index {
+  min-width: 1.7rem;
+  padding: 0.15rem 0.2rem;
+  background: var(--card-bg);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
