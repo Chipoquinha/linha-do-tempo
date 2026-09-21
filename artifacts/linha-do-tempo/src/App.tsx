@@ -244,6 +244,35 @@ export default function App() {
               </p>
             </div>
 
+            {playStep !== 'PERIOD' && selectedPeriod && (
+              <div className="mb-5 flex flex-wrap items-center gap-2 text-xs sm:text-sm font-mono text-[var(--text-muted)]">
+                <button
+                  onClick={() => {
+                    setPlayStep('PERIOD');
+                    setSelectedSegment(null);
+                  }}
+                  className="hover:text-[var(--accent-red)] transition-colors"
+                >
+                  {selectedPeriod}
+                </button>
+                <ChevronRight className="w-3.5 h-3.5 opacity-50" />
+                {playStep === 'SEGMENT' ? (
+                  <span className="text-[var(--text-main)]">Escolher recorte</span>
+                ) : selectedSegment ? (
+                  <>
+                    <button
+                      onClick={() => setPlayStep('SEGMENT')}
+                      className="hover:text-[var(--accent-red)] transition-colors"
+                    >
+                      {selectedSegment.label}
+                    </button>
+                    <ChevronRight className="w-3.5 h-3.5 opacity-50" />
+                    <span className="text-[var(--accent-red)] font-bold">{formatDate(guessDate)}</span>
+                  </>
+                ) : null}
+              </div>
+            )}
+
             <AnimatePresence mode="wait">
               {playStep === 'PERIOD' && (
                 <motion.div 
