@@ -390,6 +390,60 @@ export default function App() {
                </div>
             </div>
 
+            {(() => {
+              const result = results[results.length - 1];
+              const segment = segments.find(s => s.id === currentEvent.segmentId);
+              if (!segment) return null;
+
+              const span = Math.max(1, segment.end - segment.start);
+              const clamp = (value: number) => Math.min(100, Math.max(0, ((value - segment.start) / span) * 100));
+              const guessPosition = clamp(result.guessedDate);
+              const correctPosition = clamp(currentEvent.date);
+
+              return (
+                <div className="bg-[var(--card-bg)] border border-[var(--border-color)] p-5 sm:p-6 rounded-sm editorial-shadow mb-8">
+                  <div className="flex items-center justify-between gap-4 mb-6">
+                    <div>
+                      <div className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider">Onde você colocou o evento</div>
+                      <div className="text-sm font-serif text-[var(--text-main)] mt-1">{segment.label}</div>
+                    </div>
+                    <div className="text-right text-xs font-mono text-[var(--text-muted)]">
+                      erro de {result.timeDiff} anos
+                    </div>
+                  </div>
+
+                  <div className="relative mx-2 pt-12 pb-10">
+                    <div className="absolute left-0 right-0 top-16 h-[3px] bg-[var(--border-color)] rounded-full" />
+
+                    <div
+                      className="absolute top-0 -translate-x-1/2 text-center"
+                      style={{ left: `${guessPosition}%` }}
+                    >
+                      <div className="text-[10px] sm:text-xs font-mono text-[var(--text-muted)] whitespace-nowrap">Seu palpite</div>
+                      <div className="text-xs sm:text-sm font-mono font-bold text-[var(--text-main)] whitespace-nowrap">{formatDate(result.guessedDate)}</div>
+                      <div className="w-[2px] h-8 bg-[var(--text-main)] mx-auto mt-1" />
+                      <div className="w-3 h-3 rounded-full bg-[var(--text-main)] mx-auto -mt-[7px] ring-2 ring-[var(--card-bg)]" />
+                    </div>
+
+                    <div
+                      className="absolute top-0 -translate-x-1/2 text-center"
+                      style={{ left: `${correctPosition}%` }}
+                    >
+                      <div className="text-[10px] sm:text-xs font-mono text-[var(--accent-red)] whitespace-nowrap">Data correta</div>
+                      <div className="text-xs sm:text-sm font-mono font-bold text-[var(--accent-red)] whitespace-nowrap">{currentEvent.label}</div>
+                      <div className="w-[2px] h-8 bg-[var(--accent-red)] mx-auto mt-1" />
+                      <div className="w-4 h-4 rounded-full bg-[var(--accent-red)] mx-auto -mt-[9px] ring-2 ring-[var(--card-bg)]" />
+                    </div>
+
+                    <div className="absolute left-0 right-0 top-[76px] flex justify-between text-[10px] sm:text-xs font-mono text-[var(--text-muted)]">
+                      <span>{formatDate(segment.start)}</span>
+                      <span>{formatDate(segment.end)}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
             <button 
               onClick={handleNext} 
               className="w-full bg-[var(--text-main)] text-[var(--bg-color)] py-4 font-sans font-medium hover:bg-black transition-colors rounded-sm flex items-center justify-center gap-2"
