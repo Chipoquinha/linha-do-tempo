@@ -558,7 +558,10 @@ export default function App() {
                 >
                   <option value="">Selecione o evento...</option>
                   <option value="none">Nenhum (Extremo cronológico)</option>
-                  {eventsSorted.filter(e => e.id !== currentEvent.id).map(e => (
+                  {eventsSorted
+                    .filter(e => e.id !== currentEvent.id)
+                    .sort((a, b) => a.title.localeCompare(b.title, 'pt-BR'))
+                    .map(e => (
                     <option key={`before-${e.id}`} value={e.id}>{e.title}</option>
                   ))}
                 </select>
@@ -582,7 +585,10 @@ export default function App() {
                 >
                   <option value="">Selecione o evento...</option>
                   <option value="none">Nenhum (Extremo cronológico)</option>
-                  {eventsSorted.filter(e => e.id !== currentEvent.id).map(e => (
+                  {eventsSorted
+                    .filter(e => e.id !== currentEvent.id)
+                    .sort((a, b) => a.title.localeCompare(b.title, 'pt-BR'))
+                    .map(e => (
                     <option key={`after-${e.id}`} value={e.id}>{e.title}</option>
                   ))}
                 </select>
