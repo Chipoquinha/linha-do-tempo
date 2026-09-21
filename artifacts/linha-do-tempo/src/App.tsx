@@ -412,7 +412,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="relative mx-2 pt-12 pb-10">
+                  <div className="relative mx-2 pt-12 pb-20">
                     <div className="absolute left-0 right-0 top-16 h-[3px] bg-[var(--border-color)] rounded-full" />
 
                     <div
@@ -426,16 +426,16 @@ export default function App() {
                     </div>
 
                     <div
-                      className="absolute top-0 -translate-x-1/2 text-center"
+                      className="absolute top-16 -translate-x-1/2 text-center"
                       style={{ left: `${correctPosition}%` }}
                     >
-                      <div className="text-[10px] sm:text-xs font-mono text-[var(--accent-red)] whitespace-nowrap">Data correta</div>
+                      <div className="w-4 h-4 rounded-full bg-[var(--accent-red)] mx-auto -mt-[7px] ring-2 ring-[var(--card-bg)]" />
+                      <div className="w-[2px] h-6 bg-[var(--accent-red)] mx-auto" />
+                      <div className="text-[10px] sm:text-xs font-mono text-[var(--accent-red)] whitespace-nowrap mt-1">Data correta</div>
                       <div className="text-xs sm:text-sm font-mono font-bold text-[var(--accent-red)] whitespace-nowrap">{currentEvent.label}</div>
-                      <div className="w-[2px] h-8 bg-[var(--accent-red)] mx-auto mt-1" />
-                      <div className="w-4 h-4 rounded-full bg-[var(--accent-red)] mx-auto -mt-[9px] ring-2 ring-[var(--card-bg)]" />
                     </div>
 
-                    <div className="absolute left-0 right-0 top-[76px] flex justify-between text-[10px] sm:text-xs font-mono text-[var(--text-muted)]">
+                    <div className="absolute left-0 right-0 top-[118px] flex justify-between text-[10px] sm:text-xs font-mono text-[var(--text-muted)]">
                       <span>{formatDate(segment.start)}</span>
                       <span>{formatDate(segment.end)}</span>
                     </div>
