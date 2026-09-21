@@ -326,15 +326,21 @@ export default function App() {
                   key="step-period"
                   initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
                 >
-                  <h3 className="font-serif text-xl mb-4 text-[var(--text-main)]">Em qual período ocorreu?</h3>
-                  <div className="grid gap-3">
-                    {periods.map(p => (
+                  <div className="atlas-section-heading">
+                    <span className="atlas-section-number">I</span>
+                    <div>
+                      <div className="atlas-section-kicker">Escala geral</div>
+                      <h3 className="font-serif text-xl text-[var(--text-main)]">Em qual período ocorreu?</h3>
+                    </div>
+                  </div>
+                  <div className="grid gap-3 atlas-choice-list">
+                    {periods.map((p, index) => (
                       <button 
                         key={p} 
                         onClick={() => handleSelectPeriod(p)}
-                        className="w-full text-left p-4 border border-[var(--border-color)] hover:border-[var(--accent-green)] hover:bg-[rgba(59,66,56,0.05)] transition-colors rounded-sm font-serif text-lg flex justify-between items-center group bg-[var(--card-bg)]"
+                        className="atlas-choice w-full text-left p-4 border border-[var(--border-color)] hover:border-[var(--accent-green)] transition-colors rounded-sm font-serif text-lg flex justify-between items-center group bg-[var(--card-bg)]"
                       >
-                        {p}
+                        <span className="flex items-center gap-3"><span className="atlas-index">{String(index + 1).padStart(2, '0')}</span>{p}</span>
                         <ChevronRight className="w-5 h-5 text-[var(--text-muted)] group-hover:text-[var(--accent-green)] transition-colors" />
                       </button>
                     ))}
@@ -347,18 +353,21 @@ export default function App() {
                   key="step-segment"
                   initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
                 >
-                  <div className="flex items-center gap-2 mb-4">
-                    <button onClick={() => setPlayStep('PERIOD')} className="text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors">
+                  <div className="atlas-section-heading">
+                    <button onClick={() => setPlayStep('PERIOD')} className="atlas-section-number hover:text-[var(--accent-red)] transition-colors" aria-label="Voltar aos períodos">
                       <ChevronRight className="w-5 h-5 rotate-180" />
                     </button>
-                    <h3 className="font-serif text-xl text-[var(--text-main)]">Qual é o recorte temporal?</h3>
+                    <div>
+                      <div className="atlas-section-kicker">Escala intermediária · {selectedPeriod}</div>
+                      <h3 className="font-serif text-xl text-[var(--text-main)]">Qual é o recorte temporal?</h3>
+                    </div>
                   </div>
-                  <div className="grid gap-3">
+                  <div className="grid gap-3 atlas-choice-list">
                     {segments.filter(s => s.period === selectedPeriod).map(s => (
                       <button 
                         key={s.id} 
                         onClick={() => handleSelectSegment(s)}
-                        className="w-full text-left p-4 border border-[var(--border-color)] hover:border-[var(--accent-green)] hover:bg-[rgba(59,66,56,0.05)] transition-colors rounded-sm font-mono text-base flex justify-between items-center group bg-[var(--card-bg)]"
+                        className="atlas-choice w-full text-left p-4 border border-[var(--border-color)] hover:border-[var(--accent-green)] transition-colors rounded-sm font-mono text-base flex justify-between items-center group bg-[var(--card-bg)]"
                       >
                         {s.label}
                         <ChevronRight className="w-5 h-5 text-[var(--text-muted)] group-hover:text-[var(--accent-green)] transition-colors" />
@@ -373,11 +382,14 @@ export default function App() {
                   key="step-date"
                   initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
                 >
-                  <div className="flex items-center gap-2 mb-4">
-                    <button onClick={() => setPlayStep('SEGMENT')} className="text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors">
+                  <div className="atlas-section-heading">
+                    <button onClick={() => setPlayStep('SEGMENT')} className="atlas-section-number hover:text-[var(--accent-red)] transition-colors" aria-label="Voltar aos recortes">
                       <ChevronRight className="w-5 h-5 rotate-180" />
                     </button>
-                    <h3 className="font-serif text-xl text-[var(--text-main)]">Posicione na linha do tempo</h3>
+                    <div>
+                      <div className="atlas-section-kicker">Escala detalhada · {selectedSegment.label}</div>
+                      <h3 className="font-serif text-xl text-[var(--text-main)]">Posicione na linha do tempo</h3>
+                    </div>
                   </div>
                   
                   <div className="mt-4 p-6 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-sm editorial-shadow">
