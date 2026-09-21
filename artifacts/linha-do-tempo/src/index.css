@@ -1,21 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 @import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 
 @theme inline {
   --font-sans: 'Inter', sans-serif;
-  --font-serif: 'Playfair Display', serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-mono: 'Space Mono', monospace;
 }
 
 :root {
-  --bg-color: #f4f1ea;
-  --text-main: #2c2a25;
-  --text-muted: #6b6659;
-  --border-color: #d1cbb8;
-  --accent-red: #ab2a19;
-  --accent-green: #3b4238;
-  --card-bg: #fdfbf5;
+  --bg-color: #eee6d3;
+  --text-main: #2d2920;
+  --text-muted: #6e6656;
+  --border-color: #c9b995;
+  --accent-red: #9b3828;
+  --accent-green: #465344;
+  --card-bg: #f8f2e4;
 }
 
 body {
@@ -25,6 +25,10 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   min-height: 100dvh;
+  background-image:
+    radial-gradient(circle at 18% 12%, rgba(255,255,255,0.38), transparent 32%),
+    radial-gradient(circle at 82% 78%, rgba(120,92,49,0.07), transparent 38%),
+    repeating-linear-gradient(0deg, rgba(92,70,37,0.018) 0, rgba(92,70,37,0.018) 1px, transparent 1px, transparent 5px);
 }
 
 /* Subtle noise texture to emulate archival paper */
@@ -113,4 +117,22 @@ input[type=range]::-moz-range-track {
   text-transform: uppercase;
   transform: rotate(-2deg);
   display: inline-block;
+}
+
+/* Atlas-style cartographic backdrop: decorative only, kept faint for readability. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.16;
+  background-image:
+    repeating-radial-gradient(ellipse at 8% 38%, transparent 0 42px, rgba(75,91,70,0.22) 43px 44px, transparent 45px 72px),
+    repeating-radial-gradient(ellipse at 94% 24%, transparent 0 54px, rgba(117,74,54,0.16) 55px 56px, transparent 57px 88px),
+    linear-gradient(104deg, transparent 0 11%, rgba(75,91,70,0.13) 11.1% 11.25%, transparent 11.35% 84%, rgba(117,74,54,0.11) 84.1% 84.25%, transparent 84.35%);
+}
+
+h1, h2, h3 {
+  letter-spacing: 0.01em;
 }
