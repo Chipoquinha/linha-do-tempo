@@ -88,19 +88,52 @@ export function drawEvents(count: number): HistoricalEvent[] {
 
 export function calculateScore(event: HistoricalEvent, guessedDate: number): number {
   const correctSegment = segments.find(s => s.id === event.segmentId)!;
-  const width = correctSegment.end - correctSegment.start;
-  const error = Math.abs(guessedDate - event.date);
-  
-  const tolerances: Record<string, number> = {
-    'Exata': 0.1,
-    'Marco convencional': 0.2,
-    'Aproximada': 0.4,
-    'Intervalo': 0.4
+  const width = Math.max(1, correctSegment.end - correctSegment.start);
+  const absoluteError = Math.abs(guessedDate - event.date);
+
+  // Historical dates do not all have the same precision. Approximate dates and
+  // intervals get a small "full-credit" zone before the temporal error starts
+  // reducing the score.
+  const precisionGrace: Record<Category, number> = {
+    'Exata': 0,
+    'Marco convencional': 0.01,
+    'Aproximada': 0.03,
+    'Intervalo': 0.05
   };
-  
-  const maxError = width * tolerances[event.category];
-  if (error > maxError) return 0;
-  return Math.max(0, Math.round(100 * (1 - (error / maxError))));
+
+  const normalizedError = Math.max(
+    0,
+    (absoluteError / width) - precisionGrace[event.category]
+  );
+
+  // Continuous, piecewise-linear curve. The same absolute error therefore
+  // matters much less in broad prehistoric scales than in recent history.
+  const curve = [
+    { error: 0.00, score: 100 },
+    { error: 0.02, score: 98 },
+    { error: 0.05, score: 92 },
+    { error: 0.10, score: 82 },
+    { error: 0.20, score: 65 },
+    { error: 0.30, score: 50 },
+    { error: 0.50, score: 30 },
+    { error: 0.75, score: 15 },
+    { error: 1.00, score: 5 },
+    { error: 1.50, score: 0 }
+  ];
+
+  for (let i = 1; i < curve.length; i++) {
+    if (normalizedError <= curve[i].error) {
+      const previous = curve[i - 1];
+      const next = curve[i];
+      const progress =
+        (normalizedError - previous.error) / (next.error - previous.error);
+      return Math.round(
+        previous.score + progress * (next.score - previous.score)
+      );
+    }
+  }
+
+  return 0;
 }
 
 export function getNeighbors(eventId: string) {
