@@ -465,55 +465,77 @@ export default function App() {
 
             {(() => {
               const result = results[results.length - 1];
-              const segment = segments.find(s => s.id === currentEvent.segmentId);
-              if (!segment) return null;
+              const correctSegment = segments.find(s => s.id === currentEvent.segmentId);
+              const guessedSegment = segments.find(s => s.label === result.guessedSegment);
+              if (!correctSegment || !guessedSegment) return null;
 
-              const span = Math.max(1, segment.end - segment.start);
-              const clamp = (value: number) => Math.min(100, Math.max(0, ((value - segment.start) / span) * 100));
+              const sameSegment = guessedSegment.id === correctSegment.id;
+              const span = Math.max(1, correctSegment.end - correctSegment.start);
+              const clamp = (value: number) => Math.min(100, Math.max(0, ((value - correctSegment.start) / span) * 100));
               const guessPosition = clamp(result.guessedDate);
               const correctPosition = clamp(currentEvent.date);
 
               return (
-                <div className="bg-[var(--card-bg)] border border-[var(--border-color)] p-5 sm:p-6 rounded-sm editorial-shadow mb-8">
-                  <div className="flex items-center justify-between gap-4 mb-6">
-                    <div>
-                      <div className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider">Onde você colocou o evento</div>
-                      <div className="text-sm font-serif text-[var(--text-main)] mt-1">{segment.label}</div>
-                    </div>
-                    <div className="text-right text-xs font-mono text-[var(--text-muted)]">
-                      erro de {result.timeDiff} anos
-                    </div>
-                  </div>
-
-                  <div className="relative mx-2 pt-12 pb-24">
-                    <div className="absolute left-0 right-0 top-16 h-[3px] bg-[var(--border-color)] rounded-full" />
-
-                    <div
-                      className="absolute top-0 -translate-x-1/2 text-center"
-                      style={{ left: `${guessPosition}%` }}
-                    >
-                      <div className="text-[10px] sm:text-xs font-mono text-[var(--text-muted)] whitespace-nowrap">Seu palpite</div>
-                      <div className="text-xs sm:text-sm font-mono font-bold text-[var(--text-main)] whitespace-nowrap">{formatDate(result.guessedDate)}</div>
-                      <div className="w-[2px] h-8 bg-[var(--text-main)] mx-auto mt-1" />
-                      <div className="w-3 h-3 rounded-full bg-[var(--text-main)] mx-auto -mt-[7px] ring-2 ring-[var(--card-bg)]" />
-                    </div>
-
-                    <div
-                      className="absolute top-16 -translate-x-1/2 text-center"
-                      style={{ left: `${correctPosition}%` }}
-                    >
-                      <div className="w-4 h-4 rounded-full bg-[var(--accent-red)] mx-auto -mt-[7px] ring-2 ring-[var(--card-bg)]" />
-                      <div className="w-[2px] h-6 bg-[var(--accent-red)] mx-auto" />
-                      <div className="text-[10px] sm:text-xs font-mono text-[var(--accent-red)] whitespace-nowrap mt-1">Data correta</div>
-                      <div className="text-xs sm:text-sm font-mono font-bold text-[var(--accent-red)] whitespace-nowrap">{currentEvent.label}</div>
-                    </div>
-
-                    <div className="absolute left-0 right-0 top-[132px] flex justify-between text-[10px] sm:text-xs font-mono text-[var(--text-muted)]">
-                      <span>{formatDate(segment.start)}</span>
-                      <span>{formatDate(segment.end)}</span>
+                <>
+                  <div className="bg-[var(--card-bg)] border border-[var(--border-color)] p-5 sm:p-6 rounded-sm editorial-shadow mb-4">
+                    <div className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider mb-4">Seu caminho temporal</div>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)] mb-1">Seu palpite</div>
+                        <div className="font-serif text-[var(--text-main)]">
+                          {result.guessedPeriod} <span className="text-[var(--text-muted)]">›</span> {result.guessedSegment} <span className="text-[var(--text-muted)]">›</span> <strong>{formatDate(result.guessedDate)}</strong>
+                        </div>
+                      </div>
+                      <div className="pt-3 border-t border-[var(--border-color)]">
+                        <div className="text-[10px] font-mono uppercase tracking-wider text-[var(--accent-red)] mb-1">Referência</div>
+                        <div className="font-serif text-[var(--text-main)]">
+                          {currentEvent.period} <span className="text-[var(--text-muted)]">›</span> {correctSegment.label} <span className="text-[var(--text-muted)]">›</span> <strong className="text-[var(--accent-red)]">{currentEvent.label}</strong>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+
+                  {sameSegment ? (
+                    <div className="bg-[var(--card-bg)] border border-[var(--border-color)] p-5 sm:p-6 rounded-sm editorial-shadow mb-8">
+                      <div className="flex items-center justify-between gap-4 mb-6">
+                        <div>
+                          <div className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider">Comparação dentro do recorte</div>
+                          <div className="text-sm font-serif text-[var(--text-main)] mt-1">{correctSegment.label}</div>
+                        </div>
+                        <div className="text-right text-xs font-mono text-[var(--text-muted)]">
+                          erro de {result.timeDiff} anos
+                        </div>
+                      </div>
+
+                      <div className="relative mx-2 pt-12 pb-24">
+                        <div className="absolute left-0 right-0 top-16 h-[3px] bg-[var(--border-color)] rounded-full" />
+
+                        <div className="absolute top-0 -translate-x-1/2 text-center" style={{ left: `${guessPosition}%` }}>
+                          <div className="text-[10px] sm:text-xs font-mono text-[var(--text-muted)] whitespace-nowrap">Seu palpite</div>
+                          <div className="text-xs sm:text-sm font-mono font-bold text-[var(--text-main)] whitespace-nowrap">{formatDate(result.guessedDate)}</div>
+                          <div className="w-[2px] h-8 bg-[var(--text-main)] mx-auto mt-1" />
+                          <div className="w-3 h-3 rounded-full bg-[var(--text-main)] mx-auto -mt-[7px] ring-2 ring-[var(--card-bg)]" />
+                        </div>
+
+                        <div className="absolute top-16 -translate-x-1/2 text-center" style={{ left: `${correctPosition}%` }}>
+                          <div className="w-4 h-4 rounded-full bg-[var(--accent-red)] mx-auto -mt-[7px] ring-2 ring-[var(--card-bg)]" />
+                          <div className="w-[2px] h-6 bg-[var(--accent-red)] mx-auto" />
+                          <div className="text-[10px] sm:text-xs font-mono text-[var(--accent-red)] whitespace-nowrap mt-1">Data correta</div>
+                          <div className="text-xs sm:text-sm font-mono font-bold text-[var(--accent-red)] whitespace-nowrap">{currentEvent.label}</div>
+                        </div>
+
+                        <div className="absolute left-0 right-0 top-[132px] flex justify-between text-[10px] sm:text-xs font-mono text-[var(--text-muted)]">
+                          <span>{formatDate(correctSegment.start)}</span>
+                          <span>{formatDate(correctSegment.end)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-[var(--bg-color)] border border-[var(--border-color)] p-4 rounded-sm mb-8 text-sm text-[var(--text-muted)] font-sans">
+                      O palpite ficou em outro recorte temporal. A comparação acima mostra as duas escalas escolhidas sem projetar artificialmente uma data sobre o recorte correto.
+                    </div>
+                  )}
+                </>
               );
             })()}
 
