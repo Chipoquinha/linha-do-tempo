@@ -136,3 +136,100 @@ body::after {
 h1, h2, h3 {
   letter-spacing: 0.01em;
 }
+
+
+/* Historical-atlas ornaments: restrained cartographic language without reducing legibility. */
+.atlas-masthead {
+  position: relative;
+  padding: 2.25rem 1rem 1.25rem;
+  isolation: isolate;
+}
+
+.atlas-masthead::before,
+.atlas-masthead::after {
+  content: "";
+  position: absolute;
+  top: 0.6rem;
+  width: 34%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-color));
+  opacity: 0.9;
+}
+
+.atlas-masthead::before { left: 0; }
+.atlas-masthead::after {
+  right: 0;
+  transform: scaleX(-1);
+}
+
+.atlas-kicker {
+  margin-bottom: 1rem;
+  color: var(--accent-green);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.atlas-compass {
+  position: absolute;
+  top: -0.35rem;
+  left: 50%;
+  width: 2rem;
+  height: 2rem;
+  transform: translateX(-50%) rotate(45deg);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  background: var(--bg-color);
+  display: grid;
+  place-items: center;
+  color: var(--accent-red);
+}
+
+.atlas-compass span {
+  display: block;
+  transform: rotate(-45deg);
+  font-size: 0.85rem;
+}
+
+.atlas-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: min(19rem, 80%);
+  margin: 0 auto;
+  color: var(--accent-red);
+  font-size: 0.45rem;
+}
+
+.atlas-rule::before,
+.atlas-rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-color);
+}
+
+.editorial-shadow {
+  position: relative;
+}
+
+.editorial-shadow::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(122, 101, 64, 0.10);
+  pointer-events: none;
+  border-radius: 1px;
+}
+
+@media (min-width: 900px) {
+  body::after {
+    opacity: 0.22;
+    background-image:
+      repeating-radial-gradient(ellipse at 4% 34%, transparent 0 42px, rgba(75,91,70,0.24) 43px 44px, transparent 45px 72px),
+      repeating-radial-gradient(ellipse at 97% 28%, transparent 0 54px, rgba(117,74,54,0.19) 55px 56px, transparent 57px 88px),
+      repeating-radial-gradient(circle at 91% 82%, transparent 0 28px, rgba(75,91,70,0.13) 29px 30px, transparent 31px 50px),
+      linear-gradient(104deg, transparent 0 11%, rgba(75,91,70,0.15) 11.1% 11.25%, transparent 11.35% 84%, rgba(117,74,54,0.13) 84.1% 84.25%, transparent 84.35%);
+  }
+}
