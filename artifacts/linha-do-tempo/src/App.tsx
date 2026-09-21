@@ -176,12 +176,15 @@ export default function App() {
         {/* --- HOME SCREEN --- */}
         {appState === 'HOME' && (
           <PageWrapper key="home" className="text-center">
-            <div className="mb-12">
-              <BookOpen className="w-12 h-12 text-[var(--accent-red)] mx-auto mb-6" />
-              <h1 className="text-5xl font-serif text-[var(--text-main)] mb-4 tracking-tight">
+            <div className="atlas-masthead mb-12">
+              <div className="atlas-compass" aria-hidden="true"><span>✦</span></div>
+              <div className="atlas-kicker">Atlas histórico</div>
+              <BookOpen className="w-10 h-10 text-[var(--accent-red)] mx-auto mb-4" />
+              <h1 className="text-5xl sm:text-6xl font-serif text-[var(--text-main)] mb-3 tracking-tight">
                 Linha do Tempo
               </h1>
-              <p className="text-[var(--text-muted)] max-w-md mx-auto text-lg leading-relaxed">
+              <div className="atlas-rule" aria-hidden="true"><span>◆</span></div>
+              <p className="text-[var(--text-muted)] max-w-md mx-auto text-base sm:text-lg leading-relaxed mt-4">
                 Desenvolva sua intuição histórica. Posicione eventos no tempo, encontre conexões e desafie sua memória.
               </p>
             </div>
