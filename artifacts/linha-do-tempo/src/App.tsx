@@ -29,6 +29,18 @@ export interface RoundResult {
   timeDiff: number;
 }
 
+const PageWrapper = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -10 }}
+    transition={{ duration: 0.3 }}
+    className={`w-full max-w-2xl mx-auto p-4 sm:p-8 ${className}`}
+  >
+    {children}
+  </motion.div>
+);
+
 export default function App() {
   const [appState, setAppState] = useState<AppState>('HOME');
   
@@ -155,18 +167,6 @@ export default function App() {
     await navigator.clipboard.writeText(text + window.location.href);
     alert("Resultado copiado para a área de transferência!");
   };
-
-  const PageWrapper = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      transition={{ duration: 0.3 }}
-      className={`w-full max-w-2xl mx-auto p-4 sm:p-8 ${className}`}
-    >
-      {children}
-    </motion.div>
-  );
 
   return (
     <div className="min-h-screen flex flex-col items-center py-12 relative overflow-hidden">
