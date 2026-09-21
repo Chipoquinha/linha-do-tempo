@@ -250,10 +250,18 @@ export default function App() {
               </div>
 
               <div className="border-t border-[var(--border-color)] pt-8">
-                <h2 className="text-lg font-serif mb-4 text-[var(--text-main)] flex items-center justify-center gap-2">
+                <h2 className="text-lg font-serif mb-2 text-[var(--text-main)] flex items-center justify-center gap-2">
                   <Target className="w-5 h-5 text-[var(--text-muted)]" />
                   Treino Livre
                 </h2>
+                <div className="text-center mb-5">
+                  <div className="font-serif text-[var(--text-main)]">História Geral</div>
+                  <div className="mt-1 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--accent-red)]">
+                    <span className="inline-block w-5 h-px bg-[var(--border-color)]" />
+                    Nível 20
+                    <span className="inline-block w-5 h-px bg-[var(--border-color)]" />
+                  </div>
+                </div>
                 <div className="grid grid-cols-3 gap-3">
                   {[5, 10, 20].map(num => (
                     <button 
