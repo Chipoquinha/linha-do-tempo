@@ -412,7 +412,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="relative mx-2 pt-12 pb-20">
+                  <div className="relative mx-2 pt-12 pb-24">
                     <div className="absolute left-0 right-0 top-16 h-[3px] bg-[var(--border-color)] rounded-full" />
 
                     <div
@@ -435,7 +435,7 @@ export default function App() {
                       <div className="text-xs sm:text-sm font-mono font-bold text-[var(--accent-red)] whitespace-nowrap">{currentEvent.label}</div>
                     </div>
 
-                    <div className="absolute left-0 right-0 top-[118px] flex justify-between text-[10px] sm:text-xs font-mono text-[var(--text-muted)]">
+                    <div className="absolute left-0 right-0 top-[132px] flex justify-between text-[10px] sm:text-xs font-mono text-[var(--text-muted)]">
                       <span>{formatDate(segment.start)}</span>
                       <span>{formatDate(segment.end)}</span>
                     </div>
