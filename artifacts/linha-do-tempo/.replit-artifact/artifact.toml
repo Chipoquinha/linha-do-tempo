@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Linha do Tempo"
+description = "Jogo educacional em português sobre História Geral. O jogador posiciona eventos em períodos, segmentos e linhas temporais, recebe pontuação proporcional ao erro e pode jogar sessões aleatórias ou um desafio diário compartilhável."
+version = "1.0.0"
+id = "artifacts/linha-do-tempo"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19285
+
+[services.development]
+run = "pnpm --filter @workspace/linha-do-tempo run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/linha-do-tempo", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/linha-do-tempo/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19285"
+BASE_PATH = "/"

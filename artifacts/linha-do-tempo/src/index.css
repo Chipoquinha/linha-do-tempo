@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap');
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+
+@theme inline {
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
+:root {
+  --bg-color: #f4f1ea;
+  --text-main: #2c2a25;
+  --text-muted: #6b6659;
+  --border-color: #d1cbb8;
+  --accent-red: #ab2a19;
+  --accent-green: #3b4238;
+  --card-bg: #fdfbf5;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100dvh;
+}
+
+/* Subtle noise texture to emulate archival paper */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+}
+
+/* Custom styled native slider for precision selection */
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent;
+  outline: none;
+  margin: 16px 0;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 24px;
+  width: 12px;
+  background: var(--accent-red);
+  cursor: pointer;
+  border-radius: 2px;
+  margin-top: -10px;
+  box-shadow: 0 0 0 3px var(--card-bg);
+  transition: transform 0.1s;
+}
+
+input[type=range]::-webkit-slider-thumb:active {
+  transform: scale(1.1);
+}
+
+input[type=range]::-moz-range-thumb {
+  height: 24px;
+  width: 12px;
+  background: var(--accent-red);
+  cursor: pointer;
+  border-radius: 2px;
+  box-shadow: 0 0 0 3px var(--card-bg);
+  border: none;
+  transition: transform 0.1s;
+}
+
+input[type=range]::-moz-range-thumb:active {
+  transform: scale(1.1);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: var(--border-color);
+  border-radius: 2px;
+}
+
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: var(--border-color);
+  border-radius: 2px;
+}
+
+.editorial-shadow {
+  box-shadow: 0 8px 24px rgba(44, 42, 37, 0.05), 0 2px 8px rgba(44, 42, 37, 0.03);
+}
+
+.timeline-stamp {
+  border: 2px solid var(--accent-red);
+  color: var(--accent-red);
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-weight: bold;
+  text-transform: uppercase;
+  transform: rotate(-2deg);
+  display: inline-block;
+}
