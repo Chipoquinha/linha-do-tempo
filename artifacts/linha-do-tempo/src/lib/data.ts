@@ -77,8 +77,22 @@ export function formatDate(year: number): string {
 
 export function getDailyEvent(): HistoricalEvent {
   const today = new Date();
-  const num = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-  return eventsSorted[num % eventsSorted.length];
+
+  // Deterministic pseudo-random draw: everyone gets the same event on the
+  // same local calendar day, but consecutive days do not follow chronology.
+  const dayKey =
+    today.getFullYear() * 10000 +
+    (today.getMonth() + 1) * 100 +
+    today.getDate();
+
+  let hash = dayKey >>> 0;
+  hash ^= hash >>> 16;
+  hash = Math.imul(hash, 0x7feb352d);
+  hash ^= hash >>> 15;
+  hash = Math.imul(hash, 0x846ca68b);
+  hash ^= hash >>> 16;
+
+  return events[Math.abs(hash) % events.length];
 }
 
 export function drawEvents(count: number): HistoricalEvent[] {
