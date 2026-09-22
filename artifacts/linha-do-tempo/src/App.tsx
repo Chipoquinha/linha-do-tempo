@@ -50,6 +50,7 @@ export default function App() {
   const [results, setResults] = useState<RoundResult[]>([]);
   const [isDaily, setIsDaily] = useState(false);
   const [showHowToPlay, setShowHowToPlay] = useState(false);
+  const [trainingCode, setTrainingCode] = useState<string>('');
   
   // Play Step State
   type PlayStep = 'PERIOD' | 'SEGMENT' | 'DATE';
@@ -65,8 +66,36 @@ export default function App() {
 
   const currentEvent = queue[currentIndex];
 
+  const loadSharedTraining = (code: string) => {
+    const ids = code.split('-').filter(Boolean);
+    const sharedQueue = ids
+      .map(id => eventsSorted.find(event => event.id === id))
+      .filter((event): event is HistoricalEvent => Boolean(event));
+
+    if (sharedQueue.length !== ids.length || sharedQueue.length === 0) return false;
+
+    setQueue(sharedQueue);
+    setTrainingCode(code);
+    setCurrentIndex(0);
+    setResults([]);
+    setIsDaily(false);
+    setPlayStep('PERIOD');
+    setSelectedPeriod(null);
+    setSelectedSegment(null);
+    setAppState('PLAYING');
+    return true;
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const sharedTraining = params.get('treino');
+    if (sharedTraining) loadSharedTraining(sharedTraining);
+  }, []);
+
   const startGame = (count: number) => {
-    setQueue(drawEvents(count));
+    const newQueue = drawEvents(count);
+    setQueue(newQueue);
+    setTrainingCode(newQueue.map(event => event.id).join('-'));
     setCurrentIndex(0);
     setResults([]);
     setIsDaily(false);
@@ -74,7 +103,35 @@ export default function App() {
     setAppState('PLAYING');
   };
 
+  const shareTraining = async () => {
+    if (!trainingCode) return;
+
+    const url = new URL(window.location.href);
+    url.search = '';
+    url.hash = '';
+    url.searchParams.set('treino', trainingCode);
+
+    const text = `Linha do Tempo — História Geral · Nível 20\nJogue o mesmo treino que eu: `;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Linha do Tempo — Treino',
+          text,
+          url: url.toString(),
+        });
+        return;
+      } catch (e) {
+        // Fallback para copiar o link.
+      }
+    }
+
+    await navigator.clipboard.writeText(text + url.toString());
+    alert('Link do treino copiado para a área de transferência!');
+  };
+
   const startDaily = () => {
+    setTrainingCode('');
     setQueue([getDailyEvent()]);
     setCurrentIndex(0);
     setResults([]);
@@ -616,12 +673,20 @@ export default function App() {
               ))}
             </div>
 
-            <button 
-              onClick={() => setAppState('HOME')} 
-              className="w-full bg-[var(--text-main)] text-[var(--bg-color)] py-4 font-sans font-medium hover:bg-black transition-colors rounded-sm flex items-center justify-center gap-2"
-            >
-              <RotateCcw className="w-4 h-4" /> Voltar ao Início
-            </button>
+            <div className="grid sm:grid-cols-2 gap-3">
+              <button
+                onClick={shareTraining}
+                className="w-full border border-[var(--border-color)] bg-[var(--card-bg)] text-[var(--text-main)] py-4 font-sans font-medium hover:border-[var(--accent-red)] transition-colors rounded-sm flex items-center justify-center gap-2"
+              >
+                <Share2 className="w-4 h-4" /> Compartilhar este treino
+              </button>
+              <button 
+                onClick={() => setAppState('HOME')} 
+                className="w-full bg-[var(--text-main)] text-[var(--bg-color)] py-4 font-sans font-medium hover:bg-black transition-colors rounded-sm flex items-center justify-center gap-2"
+              >
+                <RotateCcw className="w-4 h-4" /> Voltar ao Início
+              </button>
+            </div>
           </PageWrapper>
         )}
 
