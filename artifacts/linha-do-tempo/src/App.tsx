@@ -111,7 +111,11 @@ export default function App() {
     url.hash = '';
     url.searchParams.set('treino', trainingCode);
 
-    const text = `Linha do Tempo — História Geral · Nível 20\nJogue o mesmo treino que eu: `;
+    const averageScore = results.length
+      ? Math.round(results.reduce((sum, result) => sum + result.score, 0) / results.length)
+      : null;
+    const scoreLine = averageScore !== null ? `\nMinha nota: ${averageScore}/100` : '';
+    const text = `Linha do Tempo — História Geral · Nível 20\nTreino com ${queue.length} cartas${scoreLine}\nJogue o mesmo treino que eu: `;
 
     if (navigator.share) {
       try {
