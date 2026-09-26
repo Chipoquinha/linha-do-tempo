@@ -793,6 +793,11 @@ export default function App() {
                 <div>
                   <div className="text-xs font-mono text-[var(--text-muted)] uppercase">Antes</div>
                   <div className="font-serif">{getNeighbors(currentEvent.id).prev?.title || 'Nenhum'}</div>
+                  {!dailyNeighborResult.beforeCorrect && getNeighbors(currentEvent.id).prev && (
+                    <div className="font-mono text-xs text-[var(--text-muted)] mt-1">
+                      {getNeighbors(currentEvent.id).prev!.label}
+                    </div>
+                  )}
                 </div>
                 {dailyNeighborResult.beforeCorrect ? 
                   <span className="text-[var(--accent-green)] font-mono text-sm bg-green-50 px-2 py-1 rounded">Correto</span> : 
@@ -803,6 +808,11 @@ export default function App() {
                 <div>
                   <div className="text-xs font-mono text-[var(--text-muted)] uppercase">Depois</div>
                   <div className="font-serif">{getNeighbors(currentEvent.id).next?.title || 'Nenhum'}</div>
+                  {!dailyNeighborResult.afterCorrect && getNeighbors(currentEvent.id).next && (
+                    <div className="font-mono text-xs text-[var(--text-muted)] mt-1">
+                      {getNeighbors(currentEvent.id).next!.label}
+                    </div>
+                  )}
                 </div>
                 {dailyNeighborResult.afterCorrect ? 
                   <span className="text-[var(--accent-green)] font-mono text-sm bg-green-50 px-2 py-1 rounded">Correto</span> : 
