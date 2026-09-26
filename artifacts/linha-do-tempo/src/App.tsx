@@ -533,7 +533,7 @@ export default function App() {
                <div className="bg-[var(--card-bg)] border border-[var(--border-color)] p-4 rounded-sm text-center">
                  <div className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider mb-1">Precisão da Data</div>
                  <div className="text-4xl font-serif text-[var(--accent-red)]">{results[results.length-1].score}<span className="text-lg text-[var(--text-muted)]">/100</span></div>
-                 <div className="text-xs font-mono text-[var(--text-muted)] mt-2">Diferença: {results[results.length-1].timeDiff} anos</div>
+                 <div className="text-xs font-mono text-[var(--text-muted)] mt-2">Diferença: {results[results.length-1].timeDiff} {results[results.length-1].timeDiff === 1 ? 'ano' : 'anos'}</div>
                </div>
                <div className="bg-[var(--card-bg)] border border-[var(--border-color)] p-4 rounded-sm flex flex-col justify-center gap-3">
                  <div className="flex items-center justify-between text-sm">
@@ -587,7 +587,7 @@ export default function App() {
                           <div className="text-sm font-serif text-[var(--text-main)] mt-1">{correctSegment.label}</div>
                         </div>
                         <div className="text-right text-xs font-mono text-[var(--text-muted)]">
-                          erro de {result.timeDiff} anos
+                          erro de {result.timeDiff} {result.timeDiff === 1 ? 'ano' : 'anos'}
                         </div>
                       </div>
 
