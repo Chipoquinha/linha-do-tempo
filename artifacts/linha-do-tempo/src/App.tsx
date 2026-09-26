@@ -786,39 +786,55 @@ export default function App() {
                </div>
             </div>
 
-            <div className="bg-[var(--bg-color)] border border-[var(--border-color)] p-5 rounded-sm mb-8 space-y-4">
-              <h3 className="font-serif text-lg border-b border-[var(--border-color)] pb-2">Gabarito da Vizinhança</h3>
-              
-              <div className="flex justify-between items-center">
-                <div>
-                  <div className="text-xs font-mono text-[var(--text-muted)] uppercase">Antes</div>
-                  <div className="font-serif">{getNeighbors(currentEvent.id).prev?.title || 'Nenhum'}</div>
-                  {!dailyNeighborResult.beforeCorrect && getNeighbors(currentEvent.id).prev && (
-                    <div className="font-mono text-xs text-[var(--text-muted)] mt-1">
-                      {getNeighbors(currentEvent.id).prev!.label}
+            {(() => {
+              const neighbors = getNeighbors(currentEvent.id);
+              const chosenBefore = dailyNeighborBefore === 'none'
+                ? null
+                : eventsSorted.find(event => event.id === dailyNeighborBefore);
+              const chosenAfter = dailyNeighborAfter === 'none'
+                ? null
+                : eventsSorted.find(event => event.id === dailyNeighborAfter);
+
+              const answerRow = (
+                label: string,
+                chosen: HistoricalEvent | null | undefined,
+                correct: HistoricalEvent | null,
+                isCorrect: boolean
+              ) => (
+                <div className="py-4 first:pt-0 last:pb-0">
+                  <div className="text-xs font-mono text-[var(--text-muted)] uppercase mb-3">{label}</div>
+
+                  <div className="flex justify-between items-start gap-4">
+                    <div>
+                      <div className="text-[10px] font-mono text-[var(--text-muted)] uppercase">Sua resposta</div>
+                      <div className="font-serif">{chosen?.title || 'Nenhum'}</div>
+                      {chosen && <div className="font-mono text-xs text-[var(--text-muted)] mt-1">{chosen.label}</div>}
+                    </div>
+                    {isCorrect
+                      ? <span className="text-[var(--accent-green)] font-mono text-sm bg-green-50 px-2 py-1 rounded">Correto</span>
+                      : <span className="text-red-500 font-mono text-sm bg-red-50 px-2 py-1 rounded">Incorreto</span>}
+                  </div>
+
+                  {!isCorrect && (
+                    <div className="mt-4 pt-4 border-t border-[var(--border-color)]/50">
+                      <div className="text-[10px] font-mono text-[var(--accent-red)] uppercase">Gabarito</div>
+                      <div className="font-serif">{correct?.title || 'Nenhum'}</div>
+                      {correct && <div className="font-mono text-xs text-[var(--text-muted)] mt-1">{correct.label}</div>}
                     </div>
                   )}
                 </div>
-                {dailyNeighborResult.beforeCorrect ? 
-                  <span className="text-[var(--accent-green)] font-mono text-sm bg-green-50 px-2 py-1 rounded">Correto</span> : 
-                  <span className="text-red-500 font-mono text-sm bg-red-50 px-2 py-1 rounded">Incorreto</span>}
-              </div>
-              
-              <div className="flex justify-between items-center pt-3 border-t border-[var(--border-color)]/50">
-                <div>
-                  <div className="text-xs font-mono text-[var(--text-muted)] uppercase">Depois</div>
-                  <div className="font-serif">{getNeighbors(currentEvent.id).next?.title || 'Nenhum'}</div>
-                  {!dailyNeighborResult.afterCorrect && getNeighbors(currentEvent.id).next && (
-                    <div className="font-mono text-xs text-[var(--text-muted)] mt-1">
-                      {getNeighbors(currentEvent.id).next!.label}
-                    </div>
-                  )}
+              );
+
+              return (
+                <div className="bg-[var(--bg-color)] border border-[var(--border-color)] p-5 rounded-sm mb-8">
+                  <h3 className="font-serif text-lg border-b border-[var(--border-color)] pb-2 mb-4">Resultado da Vizinhança</h3>
+                  <div className="divide-y divide-[var(--border-color)]">
+                    {answerRow('Antes', chosenBefore, neighbors.prev, dailyNeighborResult.beforeCorrect)}
+                    {answerRow('Depois', chosenAfter, neighbors.next, dailyNeighborResult.afterCorrect)}
+                  </div>
                 </div>
-                {dailyNeighborResult.afterCorrect ? 
-                  <span className="text-[var(--accent-green)] font-mono text-sm bg-green-50 px-2 py-1 rounded">Correto</span> : 
-                  <span className="text-red-500 font-mono text-sm bg-red-50 px-2 py-1 rounded">Incorreto</span>}
-              </div>
-            </div>
+              );
+            })()}
 
             <div className="grid grid-cols-2 gap-4">
               <button 
