@@ -836,6 +836,70 @@ export default function App() {
               );
             })()}
 
+            {(() => {
+              const neighbors = getNeighbors(currentEvent.id);
+              const highlightedIds = new Set(
+                [neighbors.prev?.id, currentEvent.id, neighbors.next?.id].filter(Boolean)
+              );
+
+              return (
+                <div className="bg-[var(--card-bg)] border border-[var(--border-color)] p-5 sm:p-6 rounded-sm editorial-shadow mb-8">
+                  <div className="mb-6">
+                    <div className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider mb-1">Visão geral</div>
+                    <h3 className="font-serif text-xl text-[var(--text-main)]">Linha do Tempo — Nível 20</h3>
+                    <p className="text-sm text-[var(--text-muted)] mt-2">
+                      Veja a posição do evento do dia e de seus vizinhos dentro da cronologia completa.
+                    </p>
+                  </div>
+
+                  <div className="relative">
+                    <div className="absolute left-[7px] top-3 bottom-3 w-px bg-[var(--border-color)]" />
+                    <div className="space-y-3">
+                      {eventsSorted.map(event => {
+                        const isCurrent = event.id === currentEvent.id;
+                        const isNeighbor = highlightedIds.has(event.id) && !isCurrent;
+
+                        return (
+                          <div key={event.id} className="relative pl-7">
+                            <div className={`absolute left-0 top-[7px] rounded-full ring-2 ring-[var(--card-bg)] ${
+                              isCurrent
+                                ? 'w-[15px] h-[15px] bg-[var(--accent-red)]'
+                                : isNeighbor
+                                  ? 'w-[11px] h-[11px] left-[2px] bg-[var(--accent-green)]'
+                                  : 'w-[7px] h-[7px] left-[4px] bg-[var(--border-color)]'
+                            }`} />
+                            <div className={`${isCurrent || isNeighbor ? 'py-1' : ''}`}>
+                              <div className={`font-mono text-[10px] sm:text-xs ${
+                                isCurrent
+                                  ? 'text-[var(--accent-red)] font-bold'
+                                  : isNeighbor
+                                    ? 'text-[var(--accent-green)] font-bold'
+                                    : 'text-[var(--text-muted)]'
+                              }`}>
+                                {event.label}
+                                {isCurrent && ' · EVENTO DO DIA'}
+                                {event.id === neighbors.prev?.id && ' · VIZINHO ANTERIOR'}
+                                {event.id === neighbors.next?.id && ' · VIZINHO POSTERIOR'}
+                              </div>
+                              <div className={`font-serif ${
+                                isCurrent
+                                  ? 'text-lg text-[var(--text-main)] font-bold'
+                                  : isNeighbor
+                                    ? 'text-base text-[var(--text-main)]'
+                                    : 'text-sm text-[var(--text-muted)]'
+                              }`}>
+                                {event.title}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
             <div className="grid grid-cols-2 gap-4">
               <button 
                 onClick={handleShare} 
